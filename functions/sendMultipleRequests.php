@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once 'prepareRequest.php';
+
 /**
  * @param array{array{update: array{array{id: int, stock_quantity: int}}}} $bodies
  */
