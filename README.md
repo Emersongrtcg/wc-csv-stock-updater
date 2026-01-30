@@ -66,5 +66,5 @@ Other great mug,68
 
 ## Contributing
 
-- Did you find a bug or have a suggestion? (Check the issues)[https://github.com/Emersongrtcg/wc-csv-stock-updater/issues] to see if someone has already mentioned the same issue. If not, open a new issue.
-- Do you want to fix or implement something by yourself? (Fork the project)[https://github.com/Emersongrtcg/wc-csv-stock-updater/fork], commit your changes and (make a pull request)[https://github.com/Emersongrtcg/wc-csv-stock-updater/pulls] explaining why these changes were made.
+- Did you find a bug or have a suggestion? [Check the issues](https://github.com/Emersongrtcg/wc-csv-stock-updater/issues) to see if someone has already mentioned the same issue. If not, open a new issue.
+- Do you want to fix or implement something by yourself? [Fork the project](https://github.com/Emersongrtcg/wc-csv-stock-updater/fork), commit your changes and [make a pull request](https://github.com/Emersongrtcg/wc-csv-stock-updater/pulls) explaining why these changes were made.
