@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-/**
- * @param array{WcUpdateRequestBody} $bodies
- */
-function sendRequests(array $bodies): string
+final class SendRequest
 {
-    //Is there more than one request body? If yes, use the multiple sender. If
-    //not, use the single sender.
-    return isset($bodies[1]) ?
-        new SendMultipleRequests()($bodies) :
-        new SendSingleRequest()($bodies[0]);
+    /**
+     * @param array{WcUpdateRequestBody} $bodies
+     */
+    public function __invoke(array $bodies): string
+    {
+        // Is there more than one request body? If yes, use the multiple sender.
+        // If not, use the single sender.
+        return isset($bodies[1]) ?
+            new SendMultipleRequests()($bodies) :
+            new SendSingleRequest()($bodies[0]);
+    }
 }
