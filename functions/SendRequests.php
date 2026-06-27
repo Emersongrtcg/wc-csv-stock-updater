@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-final class SendRequest
+final class SendRequests
 {
     /**
      * @param array{WcUpdateRequestBody} $bodies

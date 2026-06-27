@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-require_once 'SendRequests.php';
-
-/**
- * @param array<int, int> $stocks
- */
-function updateStocks(array $stocks)
+final class UpdateStocks
 {
-    $requestBodies = new GetRequestBodies()($stocks);
+    /**
+     * @param array<int, int> $stocks
+     */
+    public function __invoke(array $stocks)
+    {
+        $requestBodies = new GetRequestBodies()($stocks);
 
-    $response = sendRequests($requestBodies);
+        $response = new SendRequests()($requestBodies);
 
-    echo $response;
+        echo $response;
+    }
 }
