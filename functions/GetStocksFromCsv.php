@@ -5,68 +5,76 @@ declare(strict_types=1);
 use const ID_COLUMN_TITLE as ID;
 use const STOCK_COLUMN_TITLE as STOCK;
 
-/**
- * @return array<int, int>
- */
-function getStocksFromCsv(string $filePath): array
-{
-    [$csv, $header] = openCsv($filePath);
+final readonly class GetStocksFromCsv {
+    private string $filePath;
+    /**
+     * @var resource|false
+     */
+    private $csv;
+    private array $header;
 
-    $stocks = [];
-    while ($line = getNextLine($csv)) {
-        $line = array_combine($header, $line);
+    /**
+     * @return array<int, int>
+     */
+    public function __invoke(string $filePath): array
+    {
+        $this->filePath = $filePath;
 
-        $id = $line[ID];
-        if (isset($stocks[$id])) {
-            throw new Exception("The id $id apperas more than once in $filePath.");
+        $this->openCsv();
+
+        $stocks = [];
+        while ($line = $this->getNextLine()) {
+            $line = array_combine($this->header, $line);
+
+            $id = $line[ID];
+            if (isset($stocks[$id])) {
+                throw new Exception(
+                    "The id $id apperas more than once in $this->filePath."
+                );
+            }
+
+            $stocks[$id] = (int) $line[STOCK];
         }
 
-        $stocks[$id] = (int) $line[STOCK];
+        return $stocks;
     }
 
-    fclose($csv);
+    private function openCsv(): void
+    {
+        $this->csv = @fopen(FILES_DIR . DIRECTORY_SEPARATOR . $this->filePath, 'r');
+        if ($this->csv === false) {
+            throw new Exception("Failed to load $this->filePath.");
+        }
 
-    return $stocks;
-}
-
-/**
- * @return array{csv: resource, header: array}
- */
-function openCsv(string $filePath): array
-{
-    $csv = @fopen("files/$filePath", 'r');
-    if ($csv === false) {
-        throw new Exception("Failed to load $filePath.");
+        $this->header = $this->getNextLine();
+        if (!$this->hasValidHeader()) {
+            throw new Exception(
+                "$this->filePath needs to have a header with at least the columns " . 
+                ID . ' and ' . STOCK . '.'
+            );
+        }
     }
 
-    $header = getNextLine($csv);
-    if (!isValidHeader($header)) {
-        throw new Exception(
-            "$filePath needs to have a header with at least the columns " . 
-            ID . ' and ' . STOCK . '.'
-        );
+    private function getNextLine(): array|false
+    {
+        //@ for the deprecation warning in PHP 8.4 for the use of the default
+        //value of the escape argument.
+        return @fgetcsv($this->csv, escape: "\\");
     }
 
-    return ['csv' => $csv, 'header' => $header];
-}
-
-/**
- * @param resource $csv
- */
-function getNextLine($csv): array|false
-{
-    //@ for the deprecation warning in PHP 8.4 for the use of the default value
-    //of the escape argument.
-    return @fgetcsv($csv, escape: "\\");
-}
-
-function isValidHeader(array $header): bool
-{
-    if (!array_any($header, fn($head) => $head === ID)) {
-        return false;
+    private function hasValidHeader(): bool
+    {
+        if (!array_any($this->header, fn($head) => $head === ID)) {
+            return false;
+        }
+        if (!array_any($this->header, fn($head) => $head === STOCK)) {
+            return false;
+        }
+        return true;
     }
-    if (!array_any($header, fn($head) => $head === STOCK)) {
-        return false;
+
+    private function __destruct()
+    {
+        fclose($this->csv);
     }
-    return true;
 }

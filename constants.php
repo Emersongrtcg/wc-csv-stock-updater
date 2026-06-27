@@ -4,3 +4,4 @@
 const MAX_PRODUCTS_PER_REQUEST = 100;
 
 const SRC_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'functions';
+const FILES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'files';

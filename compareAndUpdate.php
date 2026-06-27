@@ -5,12 +5,11 @@ declare(strict_types=1);
 require_once 'constants.php';
 require_once 'autoload.php';
 require_once 'config.php';
-require_once 'functions/GetStocksFromCsv.php';
 require_once 'functions/GetChangedItems.php';
 require_once 'functions/UpdateStocks.php';
 
-$oldStock = getStocksFromCsv(OLD_DATA_FILE_NAME);
-$newStock = getStocksFromCsv(NEW_DATA_FILE_NAME);
+$oldStock = new GetStocksFromCsv()(OLD_DATA_FILE_NAME);
+$newStock = new GetStocksFromCsv()(NEW_DATA_FILE_NAME);
 
 $changedItems = getChangedItems($oldStock, $newStock);
 if (empty($changedItems)) {
