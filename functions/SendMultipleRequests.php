@@ -4,43 +4,55 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-/**
- * @param array{WcUpdateRequestBody} $bodies
- */
-function sendMultipleRequests(array $bodies): string
+final readonly class SendMultipleRequests
 {
-    $cmh = curl_multi_init();
-    foreach ($bodies as $body) {
-        $ch = new PrepareRequest()($body);
-        curl_multi_add_handle($cmh, $ch);
+    private CurlMultiHandle $cmh;
+
+    public function __construct()
+    {
+        $this->cmh = curl_multi_init();
     }
 
-    $responses = executeMultiHandles($cmh);
+    /**
+     * @param array{WcUpdateRequestBody} $bodies
+     */
+    public function __invoke(array $bodies): string
+    {
+        foreach ($bodies as $body) {
+            $ch = new PrepareRequest()($body);
+            curl_multi_add_handle($this->cmh, $ch);
+        }
 
-    curl_multi_close($cmh);
+        $responses = $this->executeMultiHandle();
 
-    return $responses;
-}
-
-function executeMultiHandles(CurlMultiHandle $cmh): string
-{
-    $responses = '';
-    do {
-        curl_multi_exec($cmh, $running);
-        $responses .= getMessages($cmh);
-    } while ($running);
-
-    return $responses;
-}
-
-function getMessages(CurlMultiHandle $cmh): string
-{
-    $message = curl_multi_info_read($cmh);
-    if (false === $message) {
-        return '';
+        return $responses;
     }
 
-    $response = curl_multi_getcontent($message['handle']);
+    private function executeMultiHandle(): string
+    {
+        $responses = '';
+        do {
+            curl_multi_exec($this->cmh, $running);
+            $responses .= $this->getMessages();
+        } while ($running);
 
-    return json_encode(json_decode($response), JSON_PRETTY_PRINT) . PHP_EOL;
+        return $responses;
+    }
+
+    private function getMessages(): string
+    {
+        $message = curl_multi_info_read($this->cmh);
+        if (false === $message) {
+            return '';
+        }
+
+        $response = curl_multi_getcontent($message['handle']);
+
+        return json_encode(json_decode($response), JSON_PRETTY_PRINT) . PHP_EOL;
+    }
+
+    public function __destruct()
+    {
+        curl_multi_close($this->cmh);
+    }
 }
