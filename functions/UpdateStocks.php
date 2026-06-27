@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-require_once 'GetRequestBodies.php';
 require_once 'SendRequests.php';
 
 /**
@@ -10,7 +9,7 @@ require_once 'SendRequests.php';
  */
 function updateStocks(array $stocks)
 {
-    $requestBodies = getRequestBodies($stocks);
+    $requestBodies = new GetRequestBodies()($stocks);
 
     $response = sendRequests($requestBodies);
 

@@ -4,29 +4,41 @@ declare(strict_types=1);
 
 /**
  * Formats the changed items list in the way WooCommerce API needs to be formated.
- * @return array{array{update: array{array{id: int, stock_quantity: int}}}} The
- * list of request bodies, ready to be JSON-parsed.
  */
-function getRequestBodies(array $data): array
+final readonly class GetRequestBodies
 {
-    $preparedData = [];
+    /**
+     * @var array{array{update: array{array{id: int, stock_quantity: int}}}}
+     */
+    private array $requestBodies;
 
-    $chunkedArray = array_chunk($data, MAX_PRODUCTS_PER_REQUEST, true);
-    foreach ($chunkedArray as $dataChunk) {
-        $preparedData[] = formatRequestBody($dataChunk);
+    /**
+     * @return array{array{update: array{array{id: int, stock_quantity: int}}}} The
+     * list of request bodies, ready to be JSON-parsed.
+     */
+    public function __invoke(array $changedItems): array
+    {
+        $chunkedArray = array_chunk($changedItems, MAX_PRODUCTS_PER_REQUEST, true);
+        foreach ($chunkedArray as $dataChunk) {
+            $this->requestBodies[] = $this->formatRequestBody($dataChunk);
+        }
+
+        return $this->requestBodies;
     }
 
-    return $preparedData;
-}
-
-function formatRequestBody(array $data): array
-{
-    $formatedData = [];
-    foreach ($data as $id => $qnt) {
-        $formatedData[] = [
-            'id' => $id,
-            'stock_quantity' => $qnt
-        ];
+    /**
+     * @param array $data
+     * @return array{update: array{array{id: int, stock_quantity: int}}}
+     */
+    private function formatRequestBody(array $data): array
+    {
+        $formatedData = [];
+        foreach ($data as $id => $qnt) {
+            $formatedData[] = [
+                'id' => $id,
+                'stock_quantity' => $qnt
+            ];
+        }
+        return ['update' => $formatedData];
     }
-    return ['update' => $formatedData];
 }
