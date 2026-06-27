@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-require_once 'sendMultipleRequests.php';
-require_once 'sendSingleRequest.php';
+require_once 'SendMultipleRequests.php';
+require_once 'SendSingleRequest.php';
 
 /**
  * @param array{array{update: array{array{id: int, stock_quantity: int}}}} $bodies
