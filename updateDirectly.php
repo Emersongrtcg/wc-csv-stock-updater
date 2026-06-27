@@ -9,4 +9,4 @@ require_once 'functions/UpdateStocks.php';
 
 $stocks = new GetStocksFromCsv()(STOCK_FILE_NAME);
 
-updateStocks($changedItems);
+updateStocks($stocks);
