@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-function sendSingleRequest(WcUpdateRequestBody $body): string
+final class SendSingleRequest
 {
-    $ch = new PrepareRequest()($body);
+    public function __invoke(WcUpdateRequestBody $body): string
+    {
+        $ch = new PrepareRequest()($body);
 
-    $response = curl_exec($ch);
-    curl_close($ch);
+        $response = curl_exec($ch);
 
-    return json_encode(json_decode($response), JSON_PRETTY_PRINT);
+        return json_encode(json_decode($response), JSON_PRETTY_PRINT);
+    }
 }
