@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
+use Objects\CurlMultiHandleAdapter;
 use Objects\WcUpdateRequestBody;
 
 final readonly class SendMultipleRequests
 {
-    private CurlMultiHandle $cmh;
+    private CurlMultiHandleAdapter $cmh;
 
     public function __construct()
     {
-        $this->cmh = curl_multi_init();
+        $this->cmh = new CurlMultiHandleAdapter();
     }
 
     /**
@@ -20,39 +21,11 @@ final readonly class SendMultipleRequests
     {
         foreach ($bodies as $body) {
             $ch = new PrepareRequest()($body);
-            curl_multi_add_handle($this->cmh, $ch);
+            $this->cmh->addHandle($ch);
         }
 
-        $responses = $this->executeMultiHandle();
+        $this->cmh->execute();
 
-        return $responses;
-    }
-
-    private function executeMultiHandle(): string
-    {
-        $responses = '';
-        do {
-            curl_multi_exec($this->cmh, $running);
-            $responses .= $this->getMessages();
-        } while ($running);
-
-        return $responses;
-    }
-
-    private function getMessages(): string
-    {
-        $message = curl_multi_info_read($this->cmh);
-        if (false === $message) {
-            return '';
-        }
-
-        $response = curl_multi_getcontent($message['handle']);
-
-        return json_encode(json_decode($response), JSON_PRETTY_PRINT) . PHP_EOL;
-    }
-
-    public function __destruct()
-    {
-        curl_multi_close($this->cmh);
+        return $this->cmh->responses;
     }
 }
