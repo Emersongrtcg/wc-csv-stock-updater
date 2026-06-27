@@ -4,18 +4,25 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-function prepareRequest(WcUpdateRequestBody $body): CurlHandle
+final readonly class PrepareRequest
 {
-    $url = STORE_URL . 'wp-json/wc/v3/products/batch';
-    $ch = curl_init($url);
-    
-    $pwd = CONSUMER_KEY . ":" . CONSUMER_SECRET;
-    curl_setopt($ch, CURLOPT_USERPWD, $pwd);
+    private CurlHandle $ch;
 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $body->json());
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    public function __construct()
+    {
+        $url = STORE_URL . 'wp-json/wc/v3/products/batch';
+        $this->ch = curl_init($url);
 
-    return $ch;
+        $pwd = CONSUMER_KEY . ":" . CONSUMER_SECRET;
+        curl_setopt($this->ch, CURLOPT_USERPWD, $pwd);
+
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    }
+    public function __invoke(WcUpdateRequestBody $body): CurlHandle
+    {
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $body->json());
+        return $this->ch;
+    }
 }

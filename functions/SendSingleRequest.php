@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-require_once 'PrepareRequest.php';
-
 function sendSingleRequest(WcUpdateRequestBody $body): string
 {
-    $ch = prepareRequest($body);
+    $ch = new PrepareRequest()($body);
 
     $response = curl_exec($ch);
     curl_close($ch);

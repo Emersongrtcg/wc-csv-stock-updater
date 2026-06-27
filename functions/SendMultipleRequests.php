@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use Objects\WcUpdateRequestBody;
 
-require_once 'PrepareRequest.php';
-
 /**
  * @param array{WcUpdateRequestBody} $bodies
  */
@@ -13,7 +11,7 @@ function sendMultipleRequests(array $bodies): string
 {
     $cmh = curl_multi_init();
     foreach ($bodies as $body) {
-        $ch = prepareRequest($body);
+        $ch = new PrepareRequest()($body);
         curl_multi_add_handle($cmh, $ch);
     }
 
