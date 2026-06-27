@@ -2,79 +2,43 @@
 
 declare(strict_types=1);
 
+use Objects\StockCsvFile;
 use const ID_COLUMN_TITLE as ID;
 use const STOCK_COLUMN_TITLE as STOCK;
 
-final readonly class GetStocksFromCsv {
-    private string $filePath;
+final class GetStocksFromCsv
+{
     /**
-     * @var resource|false
+     * @var array<int, int>
      */
-    private $csv;
-    private array $header;
+    private array $stocks;
+    private readonly StockCsvFile $csv;
+    private readonly string $fileName;
 
     /**
      * @return array<int, int>
      */
-    public function __invoke(string $filePath): array
+    public function __invoke(string $fileName): array
     {
-        $this->filePath = $filePath;
+        $this->csv = new StockCsvFile(FILES_DIR . DIRECTORY_SEPARATOR . $fileName);
+        $this->fileName = $fileName;
 
-        $this->openCsv();
-
-        $stocks = [];
-        while ($line = $this->getNextLine()) {
-            $line = array_combine($this->header, $line);
-
-            $id = $line[ID];
-            if (isset($stocks[$id])) {
-                throw new Exception(
-                    "The id $id apperas more than once in $this->filePath."
-                );
-            }
-
-            $stocks[$id] = (int) $line[STOCK];
+        while ($line = $this->csv->nextLine()) {
+            $this->insertLineInStocks($line);
         }
 
-        return $stocks;
+        return $this->stocks;
     }
 
-    private function openCsv(): void
+    private function insertLineInStocks(array $line): void
     {
-        $this->csv = @fopen(FILES_DIR . DIRECTORY_SEPARATOR . $this->filePath, 'r');
-        if ($this->csv === false) {
-            throw new Exception("Failed to load $this->filePath.");
-        }
-
-        $this->header = $this->getNextLine();
-        if (!$this->hasValidHeader()) {
+        $id = $line[ID];
+        if (isset($this->stocks[$id])) {
             throw new Exception(
-                "$this->filePath needs to have a header with at least the columns " . 
-                ID . ' and ' . STOCK . '.'
+                "The id $id appears more than once in $this->fileName."
             );
         }
-    }
 
-    private function getNextLine(): array|false
-    {
-        //@ for the deprecation warning in PHP 8.4 for the use of the default
-        //value of the escape argument.
-        return @fgetcsv($this->csv, escape: "\\");
-    }
-
-    private function hasValidHeader(): bool
-    {
-        if (!array_any($this->header, fn($head) => $head === ID)) {
-            return false;
-        }
-        if (!array_any($this->header, fn($head) => $head === STOCK)) {
-            return false;
-        }
-        return true;
-    }
-
-    private function __destruct()
-    {
-        fclose($this->csv);
+        $this->stocks[$id] = (int) $line[STOCK];
     }
 }
