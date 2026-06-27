@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use Objects\WcUpdateRequestBody;
+
 require_once 'PrepareRequest.php';
 
 /**
- * @param array{array{update: array{array{id: int, stock_quantity: int}}}} $bodies
+ * @param array{WcUpdateRequestBody} $bodies
  */
 function sendMultipleRequests(array $bodies): string
 {

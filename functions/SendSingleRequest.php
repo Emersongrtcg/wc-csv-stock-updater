@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
+use Objects\WcUpdateRequestBody;
+
 require_once 'PrepareRequest.php';
 
-/**
- * @param array{update: array{array{id: int, stock_quantity: int}}} $body
- */
-function sendSingleRequest(array $body): string
+function sendSingleRequest(WcUpdateRequestBody $body): string
 {
     $ch = prepareRequest($body);
 
