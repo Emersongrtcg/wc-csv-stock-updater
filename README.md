@@ -1,5 +1,5 @@
 # wc-csv-stock-updater
-![project under MIT license](https://img.shields.io/badge/license-MIT-green) ![PHP 8.0 or further](https://img.shields.io/badge/php-8.0%2B-4F5B93?logo=php)
+![project under MIT license](https://img.shields.io/badge/license-MIT-green) ![PHP 8.0 or further](https://img.shields.io/badge/php-8.4%2B-4F5B93?logo=php)
 
 A script for updating the stock levels of several products in a WooCommerce store using CSV files and the WooCommerce API. It was built for inventory count purposes.
 
@@ -14,7 +14,7 @@ Used when you already have the product stock levels that need updating. The scri
 
 ## Prerequisites to run this script
 
-- **PHP 8.0 or further**: This script uses union types, which are not available in PHP versions prior to 8.0. You should be using a PHP version that at least has active security support. To check the officially supported PHP versions, [click here](https://www.php.net/supported-versions.php).
+- **PHP 8.4 or further**: This script uses the function `array_any`, which is not available in PHP versions prior to 8.4. You should be using a PHP version that at least has active security support. To check the officially supported PHP versions, [click here](https://www.php.net/supported-versions.php).
 - **WooCommerce API**: You will need a Consumer Key and a Consumer Secret from the Woocommerce API in your store. If you don't know how to get them, you can check [this link](https://woocommerce.com/document/woocommerce-rest-api/#generate-api-keys).
 
 ## How to use this script
