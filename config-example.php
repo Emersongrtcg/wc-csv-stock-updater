@@ -1,5 +1,7 @@
 <?php
 
+namespace WcCsvStockUpdater;
+
 //The URL of your store.
 const STORE_URL = 'https://examplestore.com/';
 
