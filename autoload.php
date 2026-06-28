@@ -1,13 +1,20 @@
 <?php
 
-spl_autoload_register(function (string $className): bool {
-    $adjustedClassName = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+use const WcCsvStockUpdater\SRC_DIR;
 
-    $filename = SRC_DIR . DIRECTORY_SEPARATOR . $adjustedClassName;
-    if (!file_exists($filename)) {
+spl_autoload_register(function (string $className): bool {
+    if (!str_starts_with($className, 'WcCsvStockUpdater')) {
         return false;
     }
 
-    require $filename;
+    $adjustedClassName = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+    $fileSubPath = str_replace('WcCsvStockUpdater', 'src', $adjustedClassName);
+
+    $filePath = SRC_DIR . DIRECTORY_SEPARATOR . $fileSubPath;
+    if (!file_exists($filePath)) {
+        return false;
+    }
+
+    require $filePath;
     return true;
 });

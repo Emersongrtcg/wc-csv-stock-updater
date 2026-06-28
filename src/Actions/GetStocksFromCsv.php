@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Actions;
+namespace WcCsvStockUpdater\Actions;
 
 use Exception;
-use Objects\StockCsvFile;
-use const FILES_DIR;
-use const ID_COLUMN_TITLE as ID;
-use const STOCK_COLUMN_TITLE as STOCK;
+use WcCsvStockUpdater\Objects\StockCsvFile;
+use const WcCsvStockUpdater\FILES_DIR;
+use const WcCsvStockUpdater\ID_COLUMN_TITLE as ID;
+use const WcCsvStockUpdater\STOCK_COLUMN_TITLE as STOCK;
 
 final class GetStocksFromCsv
 {

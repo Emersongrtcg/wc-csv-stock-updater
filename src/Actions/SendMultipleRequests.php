@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Actions;
+namespace WcCsvStockUpdater\Actions;
 
-use Objects\CurlMultiHandleAdapter;
-use Objects\WcUpdateRequestBody;
+use WcCsvStockUpdater\Objects\CurlMultiHandleAdapter;
+use WcCsvStockUpdater\Objects\WcUpdateRequestBody;
 
 final readonly class SendMultipleRequests
 {

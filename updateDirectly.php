@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-use Actions\GetStocksFromCsv;
-use Actions\UpdateStocks;
+use WcCsvStockUpdater\Actions\GetStocksFromCsv;
+use WcCsvStockUpdater\Actions\UpdateStocks;
+use const WcCsvStockUpdater\STOCK_FILE_NAME;
 
 require_once 'constants.php';
 require_once 'autoload.php';

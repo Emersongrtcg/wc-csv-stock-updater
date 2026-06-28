@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Objects;
+namespace WcCsvStockUpdater\Objects;
 
-use const \ID_COLUMN_TITLE as ID;
-use const \STOCK_COLUMN_TITLE as STOCK;
+use Exception;
+use const WcCsvStockUpdater\FILES_DIR;
+use const WcCsvStockUpdater\ID_COLUMN_TITLE as ID;
+use const WcCsvStockUpdater\STOCK_COLUMN_TITLE as STOCK;
 
 final class StockCsvFile
 {
@@ -23,10 +25,10 @@ final class StockCsvFile
 
     private function openCsv(): void
     {
-        $this->csv = @\fopen(\FILES_DIR . \DIRECTORY_SEPARATOR . $this->filePath, 'r');
+        $this->csv = @\fopen(FILES_DIR . DIRECTORY_SEPARATOR . $this->filePath, 'r');
 
         if ($this->csv === false) {
-            throw new \Exception("Failed to load $this->filePath.");
+            throw new Exception("Failed to load $this->filePath.");
         }
     }
 
@@ -34,7 +36,7 @@ final class StockCsvFile
     {
         $header = $this->nextLineWithouHeader();
         if ($header === false) {
-            throw new \Exception(
+            throw new Exception(
                 'Failed to obtain the header. Maybe your file is empty.'
             );
         }
@@ -43,7 +45,7 @@ final class StockCsvFile
             !\array_any($header, fn($head) => $head === ID) ||
             !\array_any($header, fn($head) => $head === STOCK)
         ) {
-            throw new \Exception(
+            throw new Exception(
                 "$this->filePath needs to have a header with at least the columns " .
                 ID . ' and ' . STOCK . '.'
             );

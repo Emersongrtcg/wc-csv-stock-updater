@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Actions;
+namespace WcCsvStockUpdater\Actions;
 
 use CurlHandle;
-use Objects\WcUpdateRequestBody;
-use const CONSUMER_KEY;
-use const CONSUMER_SECRET;
-use const STORE_URL;
+use WcCsvStockUpdater\Objects\WcUpdateRequestBody;
+use const WcCsvStockUpdater\CONSUMER_KEY;
+use const WcCsvStockUpdater\CONSUMER_SECRET;
+use const WcCsvStockUpdater\STORE_URL;
 
 final readonly class PrepareRequest
 {

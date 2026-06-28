@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Actions;
+namespace WcCsvStockUpdater\Actions;
 
 use Exception;
 
@@ -44,7 +44,7 @@ final class GetChangedItems
             $errorMessage .= "\nThe following items are present only in the old stock:\n$itemsList\n";
         }
 
-        $itemsOnlyInNewStock = array_diff_key($newStock, $oldStock);
+        $itemsOnlyInNewStock = \array_diff_key($newStock, $oldStock);
         if (!\empty($itemsOnlyInNewStock)) {
             $itemsList = \implode("\n", \array_keys($itemsOnlyInNewStock));
             $errorMessage .= "\nThe following items are present only in the new stock:\n$itemsList\n";

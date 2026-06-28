@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Actions;
+namespace WcCsvStockUpdater\Actions;
 
-use Objects\WcUpdateRequestBody;
+use WcCsvStockUpdater\Objects\WcUpdateRequestBody;
 
 final class SendSingleRequest
 {

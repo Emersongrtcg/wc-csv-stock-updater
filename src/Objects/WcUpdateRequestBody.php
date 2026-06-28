@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Objects;
+namespace WcCsvStockUpdater\Objects;
 
 final readonly class WcUpdateRequestBody
 {
@@ -23,6 +23,6 @@ final readonly class WcUpdateRequestBody
 
     public function json(): string
     {
-        return json_encode(['update' => $this->itemsToUpdate]);
+        return \json_encode(['update' => $this->itemsToUpdate]);
     }
 }

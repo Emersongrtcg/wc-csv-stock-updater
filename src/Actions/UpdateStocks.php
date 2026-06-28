@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Actions;
+namespace WcCsvStockUpdater\Actions;
 
 final class UpdateStocks
 {
