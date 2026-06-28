@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Actions;
+
+use Exception;
 use Objects\StockCsvFile;
+use const FILES_DIR;
 use const ID_COLUMN_TITLE as ID;
 use const STOCK_COLUMN_TITLE as STOCK;
 
@@ -33,7 +37,7 @@ final class GetStocksFromCsv
     private function insertLineInStocks(array $line): void
     {
         $id = $line[ID];
-        if (isset($this->stocks[$id])) {
+        if (\isset($this->stocks[$id])) {
             throw new Exception(
                 "The id $id appears more than once in $this->fileName."
             );

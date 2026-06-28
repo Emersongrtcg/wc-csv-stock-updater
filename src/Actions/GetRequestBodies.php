@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Actions;
+
 use Objects\WcUpdateRequestBody;
+use const MAX_PRODUCTS_PER_REQUEST;
 
 /**
  * Formats the changed items list in the way WooCommerce API needs to be formated.
@@ -20,7 +23,7 @@ final readonly class GetRequestBodies
      */
     public function __invoke(array $changedItems): array
     {
-        $chunkedArray = array_chunk($changedItems, MAX_PRODUCTS_PER_REQUEST, true);
+        $chunkedArray = \array_chunk($changedItems, MAX_PRODUCTS_PER_REQUEST, true);
         foreach ($chunkedArray as $dataChunk) {
             $this->requestBodies[] = new WcUpdateRequestBody($dataChunk);
         }
