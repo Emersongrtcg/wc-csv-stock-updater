@@ -10,7 +10,7 @@ use const WcCsvStockUpdater\MAX_PRODUCTS_PER_REQUEST as MAX_PER_REQUEST;
 /**
  * Generate the list of request bodies that will be used send the requests.
  */
-final readonly class GetRequestBodies
+final class GetRequestBodies
 {
     /**
      * @var array{WcUpdateRequestBody}

@@ -17,7 +17,7 @@ final class StockCsvFile
     private $csv;
     private readonly array $header;
 
-    public function __construct(private string $filePath)
+    public function __construct(public private(set) string $fileName)
     {
         $this->openCsv();
         $this->extractHeader();
@@ -25,10 +25,10 @@ final class StockCsvFile
 
     private function openCsv(): void
     {
-        $this->csv = @\fopen(FILES_DIR . DIRECTORY_SEPARATOR . $this->filePath, 'r');
+        $this->csv = @fopen(FILES_DIR . DIRECTORY_SEPARATOR . $this->fileName, 'r');
 
         if ($this->csv === false) {
-            throw new Exception("Failed to load $this->filePath.");
+            throw new Exception("Failed to load $this->fileName.");
         }
     }
 
@@ -46,7 +46,7 @@ final class StockCsvFile
             !\array_any($header, fn($head) => $head === STOCK)
         ) {
             throw new Exception(
-                "$this->filePath needs to have a header with at least the columns " .
+                "$this->fileName needs to have a header with at least the columns " .
                 ID . ' and ' . STOCK . '.'
             );
         }
@@ -67,7 +67,7 @@ final class StockCsvFile
         return $line ? \array_combine($this->header, $line) : false;
     }
 
-    private function __destruct()
+    public function __destruct()
     {
         \fclose($this->csv);
     }

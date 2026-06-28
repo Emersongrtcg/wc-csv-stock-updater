@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WcCsvStockUpdater\Objects;
 
-final readonly class WcUpdateRequestBody
+final class WcUpdateRequestBody
 {
     /**
      * @var array{array{id: int, stock_quantity: int}}

@@ -11,7 +11,7 @@ final class GetChangedItems
     /**
      * @var array<int, int>
      */
-    private array $changedItems;
+    private array $changedItems = [];
 
     /**
      * @param array<int, int> $oldStock

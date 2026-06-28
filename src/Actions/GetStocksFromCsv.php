@@ -6,7 +6,6 @@ namespace WcCsvStockUpdater\Actions;
 
 use Exception;
 use WcCsvStockUpdater\Objects\StockCsvFile;
-use const WcCsvStockUpdater\FILES_DIR;
 use const WcCsvStockUpdater\ID_COLUMN_TITLE as ID;
 use const WcCsvStockUpdater\STOCK_COLUMN_TITLE as STOCK;
 
@@ -17,15 +16,13 @@ final class GetStocksFromCsv
      */
     private array $stocks;
     private readonly StockCsvFile $csv;
-    private readonly string $fileName;
 
     /**
      * @return array<int, int>
      */
     public function __invoke(string $fileName): array
     {
-        $this->csv = new StockCsvFile(FILES_DIR . DIRECTORY_SEPARATOR . $fileName);
-        $this->fileName = $fileName;
+        $this->csv = new StockCsvFile($fileName);
 
         while ($line = $this->csv->nextLine()) {
             $this->insertLineInStocks($line);
@@ -37,9 +34,9 @@ final class GetStocksFromCsv
     private function insertLineInStocks(array $line): void
     {
         $id = $line[ID];
-        if (\isset($this->stocks[$id])) {
+        if (isset($this->stocks[$id])) {
             throw new Exception(
-                "The id $id appears more than once in $this->fileName."
+                "The id $id appears more than once in " . $this->csv->fileName . '.'
             );
         }
 

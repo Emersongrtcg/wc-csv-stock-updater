@@ -17,7 +17,7 @@ $newStock = new GetStocksFromCsv()(NEW_DATA_FILE_NAME);
 
 $changedItems = new GetChangedItems()($oldStock, $newStock);
 if (empty($changedItems)) {
-    echo 'The stocks are the same in both files. No product will be updated.';
+    echo 'The stocks are the same in both files. No product will be updated.' . PHP_EOL;
     exit;
 }
 

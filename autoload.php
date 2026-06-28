@@ -7,10 +7,10 @@ spl_autoload_register(function (string $className): bool {
         return false;
     }
 
-    $adjustedClassName = str_replace('\\', DIRECTORY_SEPARATOR, $className);
-    $fileSubPath = str_replace('WcCsvStockUpdater', 'src', $adjustedClassName);
+    $classBaseName = str_replace('WcCsvStockUpdater\\', '', $className);
+    $fileSubPath = str_replace('\\', DIRECTORY_SEPARATOR, $classBaseName);
 
-    $filePath = SRC_DIR . DIRECTORY_SEPARATOR . $fileSubPath;
+    $filePath = SRC_DIR . DIRECTORY_SEPARATOR . $fileSubPath . '.php';
     if (!file_exists($filePath)) {
         return false;
     }

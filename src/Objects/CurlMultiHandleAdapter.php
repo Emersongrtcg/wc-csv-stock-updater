@@ -9,7 +9,7 @@ use CurlMultiHandle;
 
 final class CurlMultiHandleAdapter
 {
-    public private(set) string $responses;
+    public private(set) string $responses = '';
     private readonly CurlMultiHandle $cmh;
 
     public function __construct()
