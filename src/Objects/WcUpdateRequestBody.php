@@ -23,6 +23,6 @@ final class WcUpdateRequestBody
 
     public function json(): string
     {
-        return \json_encode(['update' => $this->itemsToUpdate]);
+        return json_encode(['update' => $this->itemsToUpdate]);
     }
 }

@@ -42,8 +42,8 @@ final class StockCsvFile
         }
 
         if (
-            !\array_any($header, fn($head) => $head === ID) ||
-            !\array_any($header, fn($head) => $head === STOCK)
+            !array_any($header, fn($head) => $head === ID) ||
+            !array_any($header, fn($head) => $head === STOCK)
         ) {
             throw new Exception(
                 "$this->fileName needs to have a header with at least the columns " .
@@ -58,17 +58,17 @@ final class StockCsvFile
     {
         //@ for the deprecation warning in PHP 8.4+ for the use of the default
         //value of the escape argument.
-        return @\fgetcsv($this->csv, escape: "\\");
+        return @fgetcsv($this->csv, escape: "\\");
     }
 
     public function nextLine(): array|false
     {
         $line = $this->nextLineWithouHeader();
-        return $line ? \array_combine($this->header, $line) : false;
+        return $line ? array_combine($this->header, $line) : false;
     }
 
     public function __destruct()
     {
-        \fclose($this->csv);
+        fclose($this->csv);
     }
 }

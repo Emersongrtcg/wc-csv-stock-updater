@@ -12,8 +12,8 @@ final class SendSingleRequest
     {
         $ch = new PrepareRequest()($body);
 
-        $response = \curl_exec($ch);
+        $response = curl_exec($ch);
 
-        return \json_encode(\json_decode($response), JSON_PRETTY_PRINT);
+        return json_encode(json_decode($response), JSON_PRETTY_PRINT);
     }
 }
